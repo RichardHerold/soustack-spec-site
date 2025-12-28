@@ -15,70 +15,88 @@ if (!existsSync(registryPath)) {
 console.log('Reading registry...');
 const registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
 
+// Validate registry structure
+if (!registry.profiles || typeof registry.profiles !== 'object') {
+  throw new Error(`Invalid registry format at ${registryPath}: missing or invalid 'profiles' field`);
+}
+if (!registry.stacks || typeof registry.stacks !== 'object') {
+  throw new Error(`Invalid registry format at ${registryPath}: missing or invalid 'stacks' field`);
+}
+
 // Normalize profiles
-let profiles = [];
-if (Array.isArray(registry.profiles)) {
-  profiles = registry.profiles.map(p => ({
-    id: p.id || p.name || '',
-    title: p.title || p.name || p.id || '',
-    requires: Array.isArray(p.requires) ? [...new Set(p.requires)].sort() : [],
-    description: p.description || '',
-  })).filter(p => p.id);
-} else if (registry.profiles && typeof registry.profiles === 'object') {
-  // Handle object format
-  profiles = Object.entries(registry.profiles).map(([id, p]) => ({
-    id,
-    title: p.title || p.name || id,
-    requires: Array.isArray(p.requires) ? [...new Set(p.requires)].sort() : [],
-    description: p.description || '',
-  }));
-}
-
-if (profiles.length === 0 && (registry.profiles !== undefined && registry.profiles !== null)) {
-  throw new Error('Could not extract profiles from registry');
-}
-
-profiles.sort((a, b) => a.id.localeCompare(b.id));
+const profiles = Object.entries(registry.profiles)
+  .map(([id, p]) => {
+    if (!p || typeof p !== 'object') {
+      throw new Error(`Invalid profile format at ${registryPath}: profile '${id}' is not an object`);
+    }
+    if (typeof p.title !== 'string') {
+      throw new Error(`Invalid profile format at ${registryPath}: profile '${id}' missing 'title' field`);
+    }
+    if (typeof p.description !== 'string') {
+      throw new Error(`Invalid profile format at ${registryPath}: profile '${id}' missing 'description' field`);
+    }
+    
+    const requiresProfiles = Array.isArray(p.requiresProfiles) 
+      ? [...new Set(p.requiresProfiles)].sort() 
+      : [];
+    const requiresStacks = Array.isArray(p.requiresStacks) 
+      ? [...new Set(p.requiresStacks)].sort() 
+      : [];
+    
+    return {
+      id,
+      title: p.title,
+      requiresProfiles,
+      requiresStacks,
+      description: p.description,
+    };
+  })
+  .sort((a, b) => a.id.localeCompare(b.id));
 
 // Normalize stacks
-let stacks = [];
-if (Array.isArray(registry.stacks)) {
-  stacks = registry.stacks.map(s => {
-    const id = s.id || s.name || '';
-    const major = typeof s.major === 'number' ? s.major : (s.version ? parseInt(s.version.split('.')[0]) : 1);
+const stacks = Object.entries(registry.stacks)
+  .map(([id, s]) => {
+    if (!s || typeof s !== 'object') {
+      throw new Error(`Invalid stack format at ${registryPath}: stack '${id}' is not an object`);
+    }
+    if (typeof s.latestMajor !== 'number') {
+      throw new Error(`Invalid stack format at ${registryPath}: stack '${id}' missing 'latestMajor' field`);
+    }
+    if (!s.schema || !s.schema.major || typeof s.schema.major !== 'object') {
+      throw new Error(`Invalid stack format at ${registryPath}: stack '${id}' missing 'schema.major' field`);
+    }
+    
+    const major = s.latestMajor;
+    const dependsOn = Array.isArray(s.requires) 
+      ? [...new Set(s.requires)].sort() 
+      : [];
+    
+    // Get schema path from schema.major["1"] or similar
+    const schemaPathFromRegistry = s.schema.major[String(major)];
+    if (typeof schemaPathFromRegistry !== 'string') {
+      throw new Error(`Invalid stack format at ${registryPath}: stack '${id}' missing 'schema.major["${major}"]' field`);
+    }
+    // Ensure leading slash
+    const schemaPath = schemaPathFromRegistry.startsWith('/') 
+      ? schemaPathFromRegistry 
+      : `/${schemaPathFromRegistry}`;
+    
+    const docPath = `/docs/stacks/${id}@${major}`;
+    
     return {
       id,
       major,
-      dependsOn: Array.isArray(s.dependsOn) ? [...new Set(s.dependsOn)].sort() : [],
-      description: s.description || '',
-      schemaPath: `/stacks/${id}.schema.json`,
-      docPath: `/docs/stacks/${id}@${major}`,
+      dependsOn,
+      description: s.description || s.title || '',
+      schemaPath,
+      docPath,
     };
-  }).filter(s => s.id);
-} else if (registry.stacks && typeof registry.stacks === 'object') {
-  // Handle object format
-  stacks = Object.entries(registry.stacks).map(([id, s]) => {
-    const major = typeof s.major === 'number' ? s.major : (s.version ? parseInt(s.version.split('.')[0]) : 1);
-    return {
-      id,
-      major,
-      dependsOn: Array.isArray(s.dependsOn) ? [...new Set(s.dependsOn)].sort() : [],
-      description: s.description || '',
-      schemaPath: `/stacks/${id}.schema.json`,
-      docPath: `/docs/stacks/${id}@${major}`,
-    };
+  })
+  .sort((a, b) => {
+    const idCompare = a.id.localeCompare(b.id);
+    if (idCompare !== 0) return idCompare;
+    return a.major - b.major;
   });
-}
-
-if (stacks.length === 0 && (registry.stacks !== undefined && registry.stacks !== null)) {
-  throw new Error('Could not extract stacks from registry');
-}
-
-stacks.sort((a, b) => {
-  const idCompare = a.id.localeCompare(b.id);
-  if (idCompare !== 0) return idCompare;
-  return a.major - b.major;
-});
 
 const output = {
   profiles,

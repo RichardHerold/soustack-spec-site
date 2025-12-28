@@ -22,7 +22,8 @@ try {
       <thead>
         <tr>
           <th>Profile</th>
-          <th>Requires</th>
+          <th>Requires Profiles</th>
+          <th>Requires Stacks</th>
           <th>Description</th>
         </tr>
       </thead>
@@ -31,9 +32,20 @@ try {
           <tr>
             <td><code>{profile.id}</code></td>
             <td>
-              {profile.requires.length > 0 ? (
+              {profile.requiresProfiles && profile.requiresProfiles.length > 0 ? (
                 <ul style="list-style: none; margin: 0; padding: 0;">
-                  {profile.requires.map((req) => (
+                  {profile.requiresProfiles.map((req) => (
+                    <li><code>{req}</code></li>
+                  ))}
+                </ul>
+              ) : (
+                <em>None</em>
+              )}
+            </td>
+            <td>
+              {profile.requiresStacks && profile.requiresStacks.length > 0 ? (
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                  {profile.requiresStacks.map((req) => (
                     <li><code>{req}</code></li>
                   ))}
                 </ul>
