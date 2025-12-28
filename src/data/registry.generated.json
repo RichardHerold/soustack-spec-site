@@ -3,43 +3,74 @@
     {
       "id": "base",
       "title": "Base",
-      "requires": [],
+      "requiresProfiles": [
+        "lite"
+      ],
+      "requiresStacks": [],
       "description": "Minimum cookable baseline with yield + time"
     },
     {
       "id": "equipped",
       "title": "Equipped",
-      "requires": [],
+      "requiresProfiles": [
+        "base"
+      ],
+      "requiresStacks": [
+        "equipment"
+      ],
       "description": "Recipe declares required tools/equipment."
     },
     {
       "id": "illustrated",
       "title": "Illustrated",
-      "requires": [],
+      "requiresProfiles": [
+        "base"
+      ],
+      "requiresStacks": [
+        "illustrated"
+      ],
       "description": "Media present"
     },
     {
       "id": "lite",
       "title": "Lite",
-      "requires": [],
+      "requiresProfiles": [],
+      "requiresStacks": [],
       "description": "Lowest-friction publishing with minimal structure"
     },
     {
       "id": "prepped",
       "title": "Prepped",
-      "requires": [],
+      "requiresProfiles": [
+        "base"
+      ],
+      "requiresStacks": [
+        "prep"
+      ],
       "description": "Recipe includes prep guidance and/or mise en place tasks."
     },
     {
       "id": "scalable",
       "title": "Scalable",
-      "requires": [],
+      "requiresProfiles": [
+        "base"
+      ],
+      "requiresStacks": [
+        "quantified",
+        "scaling"
+      ],
       "description": "Quantified + scaling"
     },
     {
       "id": "timed",
       "title": "Timed",
-      "requires": [],
+      "requiresProfiles": [
+        "base"
+      ],
+      "requiresStacks": [
+        "structured",
+        "timed"
+      ],
       "description": "Structured + timed"
     }
   ],
@@ -47,8 +78,11 @@
     {
       "id": "compute",
       "major": 1,
-      "dependsOn": [],
-      "description": "",
+      "dependsOn": [
+        "quantified",
+        "timed"
+      ],
+      "description": "Compute",
       "schemaPath": "/stacks/compute.schema.json",
       "docPath": "/docs/stacks/compute@1"
     },
@@ -56,7 +90,7 @@
       "id": "dietary",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Dietary",
       "schemaPath": "/stacks/dietary.schema.json",
       "docPath": "/docs/stacks/dietary@1"
     },
@@ -64,7 +98,7 @@
       "id": "equipment",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Equipment",
       "schemaPath": "/stacks/equipment.schema.json",
       "docPath": "/docs/stacks/equipment@1"
     },
@@ -72,7 +106,7 @@
       "id": "illustrated",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Illustrated",
       "schemaPath": "/stacks/illustrated.schema.json",
       "docPath": "/docs/stacks/illustrated@1"
     },
@@ -80,7 +114,7 @@
       "id": "prep",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Prep",
       "schemaPath": "/stacks/prep.schema.json",
       "docPath": "/docs/stacks/prep@1"
     },
@@ -88,23 +122,27 @@
       "id": "quantified",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Quantified",
       "schemaPath": "/stacks/quantified.schema.json",
       "docPath": "/docs/stacks/quantified@1"
     },
     {
       "id": "referenced",
       "major": 1,
-      "dependsOn": [],
-      "description": "",
+      "dependsOn": [
+        "structured"
+      ],
+      "description": "Referenced",
       "schemaPath": "/stacks/referenced.schema.json",
       "docPath": "/docs/stacks/referenced@1"
     },
     {
       "id": "scaling",
       "major": 1,
-      "dependsOn": [],
-      "description": "",
+      "dependsOn": [
+        "quantified"
+      ],
+      "description": "Scaling",
       "schemaPath": "/stacks/scaling.schema.json",
       "docPath": "/docs/stacks/scaling@1"
     },
@@ -112,7 +150,7 @@
       "id": "storage",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Storage",
       "schemaPath": "/stacks/storage.schema.json",
       "docPath": "/docs/stacks/storage@1"
     },
@@ -120,15 +158,17 @@
       "id": "structured",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Structured",
       "schemaPath": "/stacks/structured.schema.json",
       "docPath": "/docs/stacks/structured@1"
     },
     {
       "id": "substitutions",
       "major": 1,
-      "dependsOn": [],
-      "description": "",
+      "dependsOn": [
+        "referenced"
+      ],
+      "description": "Substitutions",
       "schemaPath": "/stacks/substitutions.schema.json",
       "docPath": "/docs/stacks/substitutions@1"
     },
@@ -136,20 +176,22 @@
       "id": "techniques",
       "major": 1,
       "dependsOn": [],
-      "description": "",
+      "description": "Techniques",
       "schemaPath": "/stacks/techniques.schema.json",
       "docPath": "/docs/stacks/techniques@1"
     },
     {
       "id": "timed",
       "major": 1,
-      "dependsOn": [],
-      "description": "",
+      "dependsOn": [
+        "structured"
+      ],
+      "description": "Timed",
       "schemaPath": "/stacks/timed.schema.json",
       "docPath": "/docs/stacks/timed@1"
     }
   ],
-  "generatedAt": "2025-12-28T23:26:39.002Z",
+  "generatedAt": "2025-12-28T23:41:56.312Z",
   "source": {
     "path": "/stacks/registry.json"
   }
