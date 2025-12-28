@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+
+let syncData = null;
+try {
+  const syncPath = join(process.cwd(), 'public', 'spec-sync.json');
+  if (existsSync(syncPath)) {
+    syncData = JSON.parse(readFileSync(syncPath, 'utf-8'));
+  }
+} catch (err) {
+  console.error('Failed to load sync data:', err);
+}
+---
+
+<BaseLayout title="Sync Debug - Soustack Specification">
+  <h1>Sync Debug</h1>
+  
+  <div class="section">
+    <p>This page displays the sync metadata from the last spec synchronization.</p>
+    <p><a href="/spec-sync.json">View raw JSON</a></p>
+  </div>
+  
+  {syncData ? (
+    <div class="section">
+      <h2>Sync Metadata</h2>
+      <pre><code>{JSON.stringify(syncData, null, 2)}</code></pre>
+    </div>
+  ) : (
+    <div class="section">
+      <p><em>Sync metadata not found. Run <code>npm run sync:spec</code> to generate it.</em></p>
+    </div>
+  )}
+</BaseLayout>
+

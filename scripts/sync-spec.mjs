@@ -1,7 +1,7 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync, cpSync, writeFileSync, statSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +10,7 @@ const rootDir = join(__dirname, '..');
 const cacheDir = join(rootDir, '.cache', 'soustack-spec');
 const publicDir = join(rootDir, 'public');
 const contentDir = join(rootDir, 'src', 'content', 'spec');
+const stacksContentDir = join(rootDir, 'src', 'content', 'stacks');
 
 // Read package.json config
 const packageJson = JSON.parse(readFileSync(join(rootDir, 'package.json'), 'utf-8'));
@@ -75,6 +76,35 @@ if (!existsSync(specMdPath)) {
 mkdirSync(contentDir, { recursive: true });
 console.log('Copying SPEC.md to content...');
 cpSync(specMdPath, join(contentDir, 'SPEC.md'), { force: true });
+
+// Copy stack documentation markdown files
+const stacksDir = join(cacheDir, 'stacks');
+if (existsSync(stacksDir)) {
+  mkdirSync(stacksContentDir, { recursive: true });
+  try {
+    const stackFiles = readdirSync(stacksDir);
+    const markdownFiles = stackFiles.filter(f => {
+      const ext = extname(f);
+      return ext === '.md' && f.includes('@');
+    });
+    
+    if (markdownFiles.length > 0) {
+      console.log(`Copying ${markdownFiles.length} stack documentation file(s)...`);
+      for (const file of markdownFiles) {
+        const srcPath = join(stacksDir, file);
+        const destPath = join(stacksContentDir, file);
+        cpSync(srcPath, destPath, { force: true });
+        console.log(`  Copied ${file}`);
+      }
+    } else {
+      console.log('No stack markdown files found (this is okay)');
+    }
+  } catch (err) {
+    console.warn(`Warning: Could not copy stack docs: ${err.message}`);
+  }
+} else {
+  console.log('Stacks directory not found, skipping stack docs copy');
+}
 
 // Copy URL-CONTRACT.md to public
 const contractPath = join(rootDir, 'URL-CONTRACT.md');
