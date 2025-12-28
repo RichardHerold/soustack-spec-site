@@ -1,0 +1,156 @@
+{
+  "profiles": [
+    {
+      "id": "base",
+      "title": "Base",
+      "requires": [],
+      "description": "Minimum cookable baseline with yield + time"
+    },
+    {
+      "id": "equipped",
+      "title": "Equipped",
+      "requires": [],
+      "description": "Recipe declares required tools/equipment."
+    },
+    {
+      "id": "illustrated",
+      "title": "Illustrated",
+      "requires": [],
+      "description": "Media present"
+    },
+    {
+      "id": "lite",
+      "title": "Lite",
+      "requires": [],
+      "description": "Lowest-friction publishing with minimal structure"
+    },
+    {
+      "id": "prepped",
+      "title": "Prepped",
+      "requires": [],
+      "description": "Recipe includes prep guidance and/or mise en place tasks."
+    },
+    {
+      "id": "scalable",
+      "title": "Scalable",
+      "requires": [],
+      "description": "Quantified + scaling"
+    },
+    {
+      "id": "timed",
+      "title": "Timed",
+      "requires": [],
+      "description": "Structured + timed"
+    }
+  ],
+  "stacks": [
+    {
+      "id": "compute",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/compute.schema.json",
+      "docPath": "/docs/stacks/compute@1"
+    },
+    {
+      "id": "dietary",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/dietary.schema.json",
+      "docPath": "/docs/stacks/dietary@1"
+    },
+    {
+      "id": "equipment",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/equipment.schema.json",
+      "docPath": "/docs/stacks/equipment@1"
+    },
+    {
+      "id": "illustrated",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/illustrated.schema.json",
+      "docPath": "/docs/stacks/illustrated@1"
+    },
+    {
+      "id": "prep",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/prep.schema.json",
+      "docPath": "/docs/stacks/prep@1"
+    },
+    {
+      "id": "quantified",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/quantified.schema.json",
+      "docPath": "/docs/stacks/quantified@1"
+    },
+    {
+      "id": "referenced",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/referenced.schema.json",
+      "docPath": "/docs/stacks/referenced@1"
+    },
+    {
+      "id": "scaling",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/scaling.schema.json",
+      "docPath": "/docs/stacks/scaling@1"
+    },
+    {
+      "id": "storage",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/storage.schema.json",
+      "docPath": "/docs/stacks/storage@1"
+    },
+    {
+      "id": "structured",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/structured.schema.json",
+      "docPath": "/docs/stacks/structured@1"
+    },
+    {
+      "id": "substitutions",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/substitutions.schema.json",
+      "docPath": "/docs/stacks/substitutions@1"
+    },
+    {
+      "id": "techniques",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/techniques.schema.json",
+      "docPath": "/docs/stacks/techniques@1"
+    },
+    {
+      "id": "timed",
+      "major": 1,
+      "dependsOn": [],
+      "description": "",
+      "schemaPath": "/stacks/timed.schema.json",
+      "docPath": "/docs/stacks/timed@1"
+    }
+  ],
+  "generatedAt": "2025-12-28T22:45:58.978Z",
+  "source": {
+    "path": "/stacks/registry.json"
+  }
+}
