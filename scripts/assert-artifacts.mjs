@@ -7,37 +7,78 @@ const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 const publicDir = join(rootDir, 'public');
 
-const required = [
+/**
+ * Recursively find at least one .json file in a directory
+ * @param {string} dirPath - Directory path to search
+ * @returns {boolean} - True if at least one .json file found
+ */
+function hasJsonFile(dirPath) {
+  try {
+    const entries = readdirSync(dirPath, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = join(dirPath, entry.name);
+      if (entry.isDirectory()) {
+        if (hasJsonFile(fullPath)) {
+          return true;
+        }
+      } else if (entry.isFile() && entry.name.endsWith('.json')) {
+        return true;
+      }
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
+
+let failed = false;
+
+// Required files (must be files, not directories)
+const requiredFiles = [
   { path: 'soustack.schema.json', desc: 'Root schema' },
   { path: 'stacks/registry.json', desc: 'Stack registry' },
+  { path: 'URL-CONTRACT.md', desc: 'URL contract' },
+  { path: 'spec-sync.json', desc: 'Spec sync metadata' },
+];
+
+// Required directories (must be directories, not files)
+const requiredDirs = [
   { path: 'fixtures/valid', desc: 'Valid fixtures directory' },
   { path: 'fixtures/invalid', desc: 'Invalid fixtures directory' },
 ];
 
-let failed = false;
-
-for (const { path, desc } of required) {
+// Check required files
+for (const { path, desc } of requiredFiles) {
   const fullPath = join(publicDir, path);
   if (!existsSync(fullPath)) {
     console.error(`❌ Missing: ${desc} (${path})`);
     failed = true;
   } else {
     const stat = statSync(fullPath);
-    if (stat.isDirectory() && path.includes('fixtures')) {
-      // Check directory is not empty
-      try {
-        const entries = readdirSync(fullPath);
-        if (entries.length === 0) {
-          console.warn(`⚠️  Warning: ${desc} directory is empty`);
-        } else {
-          console.log(`✓ Found: ${desc}`);
-        }
-      } catch (err) {
-        console.error(`❌ Error reading ${desc}: ${err.message}`);
+    if (!stat.isFile()) {
+      console.error(`❌ Not a file: ${desc} (${path})`);
+      failed = true;
+    }
+  }
+}
+
+// Check required directories
+for (const { path, desc } of requiredDirs) {
+  const fullPath = join(publicDir, path);
+  if (!existsSync(fullPath)) {
+    console.error(`❌ Missing: ${desc} (${path})`);
+    failed = true;
+  } else {
+    const stat = statSync(fullPath);
+    if (!stat.isDirectory()) {
+      console.error(`❌ Not a directory: ${desc} (${path})`);
+      failed = true;
+    } else {
+      // Check that directory contains at least one .json file (recursively)
+      if (!hasJsonFile(fullPath)) {
+        console.error(`❌ Empty or no JSON files: ${desc} (${path})`);
         failed = true;
       }
-    } else {
-      console.log(`✓ Found: ${desc}`);
     }
   }
 }
@@ -47,5 +88,5 @@ if (failed) {
   process.exit(1);
 }
 
-console.log('\n✓ All required artifacts present.');
+console.log('✓ All required artifacts present.');
 
