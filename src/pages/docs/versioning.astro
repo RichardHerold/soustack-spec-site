@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Versioning - Soustack Specification">
+  <h1>Versioning</h1>
+  
+  <div class="section">
+    <h2>URL Stability</h2>
+    <p>URLs for machine-readable artifacts (schemas, definitions, stacks) are stable and do not include version numbers in the path. This ensures that references remain valid over time.</p>
+  </div>
+
+  <div class="section">
+    <h2>Breaking Changes</h2>
+    <p>Breaking changes are handled via stack major versions. When a stack introduces breaking changes, it increments its major version number (e.g., from 1.x.x to 2.x.x), while the schema URLs remain unchanged.</p>
+  </div>
+
+  <div class="section">
+    <h2>Legacy Namespaces</h2>
+    <p>Older namespaces may exist as legacy aliases for backward compatibility. These are not canonical and should not be used for new implementations. See the <a href="/URL-CONTRACT.md">URL Contract</a> for details.</p>
+  </div>
+</BaseLayout>
+

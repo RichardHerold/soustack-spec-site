@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+
+let registry = null;
+try {
+  const registryPath = join(process.cwd(), 'src', 'data', 'registry.generated.json');
+  if (existsSync(registryPath)) {
+    registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
+  }
+} catch (err) {
+  console.error('Failed to load registry:', err);
+}
+---
+
+<BaseLayout title="Stacks - Soustack Specification">
+  <h1>Stacks</h1>
+  
+  {registry && registry.stacks && registry.stacks.length > 0 ? (
+    <table>
+      <thead>
+        <tr>
+          <th>Stack</th>
+          <th>Major</th>
+          <th>Depends On</th>
+          <th>Description</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        {registry.stacks.map((stack) => (
+          <tr>
+            <td><code>{stack.id}</code></td>
+            <td>{stack.major}</td>
+            <td>
+              {stack.dependsOn.length > 0 ? (
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                  {stack.dependsOn.map((dep) => (
+                    <li><code>{dep}</code></li>
+                  ))}
+                </ul>
+              ) : (
+                <em>None</em>
+              )}
+            </td>
+            <td>{stack.description || <em>No description</em>}</td>
+            <td>
+              <a href={stack.schemaPath}>Schema</a>
+              {' | '}
+              <a href={stack.docPath}>Docs</a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>No stacks found. Run <code>npm run generate:docs</code> to generate stack data.</p>
+  )}
+</BaseLayout>
+

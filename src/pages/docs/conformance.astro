@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Conformance - Soustack Specification">
+  <h1>Conformance</h1>
+  
+  <div class="section">
+    <p>Conformance testing ensures that implementations correctly interpret and validate Soustack documents according to the specification.</p>
+  </div>
+
+  <div class="section">
+    <h2>Conformance Fixtures</h2>
+    <p>The specification includes test fixtures that demonstrate valid and invalid document structures:</p>
+    <ul>
+      <li><a href="/fixtures/valid/">Valid Fixtures</a> — Examples that conform to the specification</li>
+      <li><a href="/fixtures/invalid/">Invalid Fixtures</a> — Examples that should be rejected by validators</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Validation</h2>
+    <p>Implementations should validate documents against the canonical schemas available at:</p>
+    <ul>
+      <li><a href="/soustack.schema.json">Root Schema</a></li>
+      <li><a href="/defs/">Definition Schemas</a></li>
+      <li><a href="/stacks/">Stack Schemas</a></li>
+    </ul>
+  </div>
+</BaseLayout>
+

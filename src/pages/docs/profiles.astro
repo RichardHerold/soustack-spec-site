@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+
+let registry = null;
+try {
+  const registryPath = join(process.cwd(), 'src', 'data', 'registry.generated.json');
+  if (existsSync(registryPath)) {
+    registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
+  }
+} catch (err) {
+  console.error('Failed to load registry:', err);
+}
+---
+
+<BaseLayout title="Profiles - Soustack Specification">
+  <h1>Profiles</h1>
+  
+  {registry && registry.profiles && registry.profiles.length > 0 ? (
+    <table>
+      <thead>
+        <tr>
+          <th>Profile</th>
+          <th>Requires</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {registry.profiles.map((profile) => (
+          <tr>
+            <td><code>{profile.id}</code></td>
+            <td>
+              {profile.requires.length > 0 ? (
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                  {profile.requires.map((req) => (
+                    <li><code>{req}</code></li>
+                  ))}
+                </ul>
+              ) : (
+                <em>None</em>
+              )}
+            </td>
+            <td>{profile.description || <em>No description</em>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>No profiles found. Run <code>npm run generate:docs</code> to generate profile data.</p>
+  )}
+</BaseLayout>
+
