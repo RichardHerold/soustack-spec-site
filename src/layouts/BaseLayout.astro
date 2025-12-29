@@ -24,7 +24,10 @@ const isSpecSection = currentPath.startsWith('/docs/spec');
   <body>
     <header>
       <nav>
-        <a href="https://soustack.org" class="wordmark">Soustack</a>
+        <a href="https://soustack.org" class="brand">
+          <img src="/logo.png" alt="Soustack" />
+          <span>Soustack</span>
+        </a>
         <a href="https://soustack.org/adoption">Adoption</a>
         <a href="https://soustack.org/concepts">Concepts</a>
         <a href="/docs/spec" class={isSpecSection ? 'current' : ''}>Spec</a>

@@ -24,8 +24,8 @@ body {
 
 header {
   border-bottom: 1px solid var(--color-border);
-  padding: 1.25rem 0;
-  margin-bottom: 2.5rem;
+  padding: 1.25rem 0 1.75rem;
+  margin-bottom: 4rem;
 }
 
 header nav {
@@ -45,14 +45,29 @@ header nav a {
   letter-spacing: normal;
 }
 
-header nav a.wordmark {
-  font-weight: 500;
+header nav a.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-right: auto;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
 }
 
-header nav a.wordmark:hover {
+header nav a.brand img {
+  height: 20px;
+  width: auto;
+  display: block;
+}
+
+header nav a.brand:hover {
   color: var(--color-text);
   text-decoration: underline;
+}
+
+header nav a.brand:hover img {
+  opacity: 1;
 }
 
 header nav a:hover {
@@ -78,6 +93,14 @@ h1 {
   font-weight: 600;
   line-height: 1.15;
   color: var(--color-text);
+}
+
+h1 + p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  max-width: 42rem;
+  margin-bottom: 3rem;
 }
 
 h2 {
@@ -179,11 +202,21 @@ tr:hover {
 }
 
 .link-list li {
-  margin-bottom: 0.875rem;
+  margin-bottom: 1.1rem;
 }
 
 .link-list a {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
 }
 
 footer {
