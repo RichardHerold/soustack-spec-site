@@ -50,6 +50,7 @@ header nav a.brand {
   align-items: center;
   gap: 0.5rem;
   margin-right: auto;
+  font-family: 'IBM Plex Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
   font-weight: 600;
   font-size: 1rem;
   color: var(--color-text);
