@@ -6,6 +6,10 @@ interface Props {
 }
 
 const { title = 'Soustack Specification' } = Astro.props;
+
+// Determine if current page is the spec section
+const currentPath = Astro.url.pathname;
+const isSpecSection = currentPath.startsWith('/docs/spec');
 ---
 
 <!doctype html>
@@ -14,24 +18,35 @@ const { title = 'Soustack Specification' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
     <header>
       <nav>
-        <a href="/">Home</a>
-        <a href="/docs/spec">Spec</a>
-        <a href="/docs/profiles">Profiles</a>
-        <a href="/docs/stacks">Stacks</a>
-        <a href="/docs/conformance">Conformance</a>
-        <a href="/docs/discovery">Discovery</a>
-        <a href="/docs/debug/registry">Debug</a>
+        <a href="https://soustack.org" class="brand">
+          <img src="/logo.png" alt="Soustack" />
+          <span>soustack</span>
+        </a>
+        <a href="https://soustack.org/adoption">Adoption</a>
+        <a href="https://soustack.org/concepts">Concepts</a>
+        <a href="/docs/spec" class={isSpecSection ? 'current' : ''}>Spec</a>
+        <a href="https://github.com/RichardHerold/soustack">Repo</a>
       </nav>
     </header>
     <main>
       <slot />
     </main>
+    <footer>
+      <nav>
+        <a href="https://soustack.org">Back to Soustack.org</a>
+        <a href="/URL-CONTRACT.md">URL Contract</a>
+        <a href="https://github.com/RichardHerold/soustack-spec">GitHub</a>
+      </nav>
+    </footer>
   </body>
 </html>
 
